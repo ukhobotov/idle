@@ -3,7 +3,6 @@ package carbon
 type Container struct {
 	Layout
 	Style   *Style
-	Handler *Handler
 	Content []Element
 }
 

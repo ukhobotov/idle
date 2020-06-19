@@ -9,8 +9,10 @@ import (
 )
 
 var (
-	window *pixelgl.Window
-	w, h   float64 = 1280, 720
+	window     *pixelgl.Window
+	Height     float64 = 720
+	Width      float64 = 1280
+	Fullscreen         = true
 )
 
 var Root Element
@@ -22,12 +24,14 @@ func Run() {
 			x0, y0 float64
 		)
 
-		glfw.WindowHint(glfw.Maximized, glfw.True)
+		if Fullscreen {
+			glfw.WindowHint(glfw.Maximized, glfw.True)
+		}
 
 		// create a window
 		window, err = pixelgl.NewWindow(pixelgl.WindowConfig{
 			Title:     "Four Suns",
-			Bounds:    pixel.R(0, 0, w, h),
+			Bounds:    pixel.R(0, 0, Width, Height),
 			VSync:     true,
 			Resizable: true,
 		})
@@ -45,8 +49,8 @@ func Run() {
 			window.Update()
 
 			// handle resizing
-			if w1, h1 := window.Bounds().Size().XY(); w1 != w || h1 != h {
-				w, h = w1, h1
+			if w1, h1 := window.Bounds().Size().XY(); w1 != Width || h1 != Height {
+				Width, Height = w1, h1
 				UpdateRoot()
 			}
 
@@ -95,6 +99,6 @@ func Run() {
 }
 
 func UpdateRoot() {
-	Root.FitInto(0, 0, w, h)
+	Root.FitInto(0, 0, Width, Height)
 	Root.Rasterize()
 }
