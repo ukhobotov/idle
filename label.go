@@ -12,8 +12,8 @@ import (
 
 const defaultTextSize = 16
 
-type Label struct {
-	Layout
+type Text struct {
+	Location
 	Color     color.RGBA
 	Text      string
 	TextSize  float64
@@ -23,9 +23,9 @@ type Label struct {
 	text      *text.Text
 }
 
-func (label *Label) Handle(Event, float64, float64) {}
+func (label *Text) Handle(Event, float64, float64) {}
 
-func (label *Label) Rasterize() {
+func (label *Text) Rasterize() {
 	x, y := label.x1, label.y1
 	point := pixel.V(x, y)
 	switch label.Alignment {
@@ -58,6 +58,6 @@ func (label *Label) Rasterize() {
 	_, _ = label.text.WriteString(label.Text)
 }
 
-func (label *Label) Draw() {
+func (label *Text) Draw() {
 	label.text.Draw(window, label.matrix)
 }

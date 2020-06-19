@@ -6,7 +6,7 @@ import (
 
 type (
 	Handler struct {
-		Layout
+		Location
 		Background     HandlerStyle
 		Foreground     *Style
 		Press, Release func(this *Handler)

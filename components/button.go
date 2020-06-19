@@ -1,8 +1,9 @@
 package components
 
-import "foursuns/carbon"
+import "carbon"
 
 type Button struct {
-	carbon.Layout
-	Text carbon.Label
+	carbon.Location
+
+	Text carbon.Text
 }
