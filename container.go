@@ -33,11 +33,12 @@ func (ctr *Container) Rasterize() {
 	}
 }
 
-func (ctr *Container) Draw() {
+func (ctr *Container) Draw(win *Window) {
 	if ctr.Style != nil {
-		ctr.Style.Draw(ctr.Location.Center())
+		x, y := ctr.Location.Center()
+		ctr.Style.Draw(win, x, y)
 	}
 	for _, element := range ctr.Content {
-		element.Draw()
+		element.Draw(win)
 	}
 }

@@ -18,5 +18,5 @@ type Element interface {
 	Handle(event Event, x, y float64)
 
 	// Draw is needed to simply show rendered sprites in the window. Calling each frame.
-	Draw()
+	Draw(window *Window)
 }

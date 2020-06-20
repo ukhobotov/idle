@@ -20,7 +20,8 @@ func (switcher *Switcher) Handle(event Event, x, y float64) {
 	switcher.Current.Handle(event, x, y)
 }
 
-func (switcher *Switcher) Draw() {
-	switcher.Style.Draw(switcher.Center())
-	switcher.Current.Draw()
+func (switcher *Switcher) Draw(win *Window) {
+	x, y := switcher.Center()
+	switcher.Style.Draw(win, x, y)
+	switcher.Current.Draw(nil)
 }

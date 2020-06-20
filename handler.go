@@ -59,9 +59,10 @@ func (handler *Handler) Rasterize() {
 	handler.update()
 }
 
-func (handler *Handler) Draw() {
-	handler.background.Draw(handler.Center())
-	handler.Foreground.Draw(handler.Center())
+func (handler *Handler) Draw(win *Window) {
+	x, y := handler.Center()
+	handler.background.Draw(win, x, y)
+	handler.Foreground.Draw(win, x, y)
 }
 
 func (handler *Handler) Land() {

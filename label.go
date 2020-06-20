@@ -58,6 +58,6 @@ func (label *Text) Rasterize() {
 	_, _ = label.text.WriteString(label.Text)
 }
 
-func (label *Text) Draw() {
-	label.text.Draw(window, label.matrix)
+func (label *Text) Draw(win *Window) {
+	label.text.Draw(win.window, label.matrix)
 }

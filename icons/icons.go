@@ -3,7 +3,7 @@ package icons
 import (
 	"github.com/fogleman/gg"
 
-	"foursuns/carbon"
+	"carbon"
 )
 
 type Icon func(style Style) carbon.Drawing

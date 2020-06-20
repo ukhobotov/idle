@@ -5,20 +5,24 @@ import (
 )
 
 func main() {
-	carbon.Width, carbon.Height = 256, 128
-	carbon.Fullscreen = false
-	carbon.Root = &carbon.Container{
-		Content: []carbon.Element{
-			&carbon.Text{
-				Location: carbon.Location{
-					Left:   carbon.Margin(32),
-					Bottom: carbon.Margin(-32),
+	window := &carbon.Window{
+		Height:     256,
+		Width:      128,
+		Fullscreen: true,
+		Root: &carbon.Container{
+			Content: []carbon.Element{
+				&carbon.Text{
+					Location: carbon.Location{
+						Left:   carbon.Margin(32),
+						Bottom: carbon.Margin(-32),
+					},
+					Color:    carbon.Text2,
+					Text:     "Hello, carbon!",
+					TextSize: 16,
 				},
-				Color:    carbon.Text2,
-				Text:     "Hello, carbon!",
-				TextSize: 16,
 			},
 		},
 	}
-	carbon.Run()
+
+	window.Show()
 }

@@ -76,11 +76,11 @@ func (style *Style) Rasterize(w, h float64) {
 	}
 }
 
-func (style *Style) Draw(x, y float64) {
+func (style *Style) Draw(win *Window, x, y float64) {
 	if style == nil || style.sprite == nil {
 		return
 	}
-	style.sprite.Draw(window, pixel.IM.Moved(pixel.V(x, y)))
+	style.sprite.Draw(win.window, pixel.IM.Moved(pixel.V(x, y)))
 }
 
 func (style *Style) Empty() bool {
