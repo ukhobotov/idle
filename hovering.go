@@ -7,8 +7,8 @@ package carbon
 //
 // var hovered []Hoverable
 //
-// // Hover adds the object to wide handlers and returns its index > 0
-// func Hover(object Hoverable) {
+// // OnHover adds the object to wide handlers and returns its index > 0
+// func OnHover(object Hoverable) {
 //   for i, handler := range hovered {
 //     if handler == nil || handler == object {
 //       hovered[i] = object
@@ -19,7 +19,7 @@ package carbon
 //
 // // HandleHovered transmits the event to all wide handlers
 // func HandleHovered(event Event, x, y float64) {
-//   if event.Action != Move && event.Action != Release {
+//   if event.Action != Move && event.Action != OnRelease {
 //     return
 //   }
 //   for _, object := range hovered {

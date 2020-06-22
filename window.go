@@ -13,8 +13,7 @@ type Window struct {
 	Fullscreen    bool
 	Root          Element
 
-	window              *pixelgl.Window
-	minWidth, minHeight float64
+	window *pixelgl.Window
 }
 
 func (win *Window) Show() {
@@ -27,11 +26,9 @@ func (win *Window) Show() {
 		if win.Fullscreen {
 			glfw.WindowHint(glfw.Maximized, glfw.True)
 		}
-
 		if win.Width == 0 {
 			win.Width = 1280
 		}
-
 		if win.Height == 0 {
 			win.Height = 720
 		}
@@ -105,11 +102,6 @@ func (win *Window) Show() {
 			win.Root.Draw(win)
 		}
 	})
-}
-
-func (win *Window) SetMinSize(w, h float64) {
-	win.minWidth = w
-	win.minHeight = h
 }
 
 func (win *Window) UpdateRoot() {

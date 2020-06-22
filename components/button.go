@@ -2,21 +2,29 @@ package components
 
 import "carbon"
 
-type Button struct {
-	carbon.Location
-	carbon.Handler
+type (
+	Button struct {
+		handler
+		Style ButtonStyle
+		Text  *ButtonText
+		Icon  *ButtonIcon
+	}
 
-	Text carbon.Text
-}
+	ButtonStyle byte
+	ButtonText  struct {
+		String string
+		X, Y   float64
+	}
+	ButtonIcon struct {
+		Drawing carbon.Drawing
+		X, Y    float64
+	}
+)
 
-func (button *Button) Rasterize() {
-	// panic("implement me")
-}
+const (
+	Primary ButtonStyle = iota
+	Secondary
+	Tertiary
+)
 
-func (button *Button) Handle(event carbon.Event, x, y float64) {
-	// panic("implement me")
-}
-
-func (button *Button) Draw(*carbon.Window) {
-	// panic("implement me")
-}
+// func Button(loc carbon.Location, text string, textX, textY, text)

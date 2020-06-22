@@ -2,14 +2,16 @@ package carbon
 
 import (
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/fogleman/gg"
 )
 
 type (
 	Handler struct {
 		Location
-		Background     HandlerStyle
-		Foreground     *Style
-		Press, Release func(this *Handler)
+		Style  HandlerStyle
+		Common Drawing
+
+		OnPress, OnRelease, OnHover func(this *Handler)
 
 		background       *Style
 		hovered, pressed bool
@@ -29,56 +31,68 @@ func (handler *Handler) Handle(event Event, _, _ float64) {
 	switch event {
 
 	case Press.The(pixelgl.MouseButtonLeft):
-		if handler.Press != nil {
-			handler.Press(handler)
+		if handler.OnPress != nil {
+			handler.OnPress(handler)
 		}
 
 		handler.pressed = true
-		handler.update()
+		handler.Update()
 
 	case Release.The(pixelgl.MouseButtonLeft):
-		if handler.Release != nil {
-			handler.Release(handler)
+		if handler.OnRelease != nil {
+			handler.OnRelease(handler)
 		}
 		handler.hovered = true
 		handler.pressed = false
-		handler.update()
+		handler.Update()
 
 	case MoveEvent:
 		if !handler.hovered {
+			if handler.OnHover != nil {
+				handler.OnHover(handler)
+			}
 			hovered = append(hovered, handler)
 			handler.hovered = true
-			handler.update()
+			handler.Update()
 		}
 	}
 }
 
 func (handler *Handler) Rasterize() {
-	handler.Background.Rasterize(handler.Size())
-	handler.Foreground.Rasterize(handler.Size())
-	handler.update()
+	handler.Style.Prepare(handler.Common)
+	handler.Style.Rasterize(handler.Size())
+	handler.Update()
 }
 
 func (handler *Handler) Draw(win *Window) {
 	x, y := handler.Center()
 	handler.background.Draw(win, x, y)
-	handler.Foreground.Draw(win, x, y)
 }
 
 func (handler *Handler) Land() {
 	handler.pressed = false
 	handler.hovered = false
-	handler.update()
+	handler.Update()
 }
 
-func (handler *Handler) update() {
+func (handler *Handler) Update() {
 	switch {
 	case handler.pressed:
-		handler.background = handler.Background.Active
+		handler.background = handler.Style.Active
 	case handler.hovered:
-		handler.background = handler.Background.Hover
+		handler.background = handler.Style.Hover
 	default:
-		handler.background = handler.Background.Idle
+		handler.background = handler.Style.Idle
+	}
+}
+
+func (style *HandlerStyle) Prepare(common Drawing) {
+	for _, style := range []*Style{style.Idle, style.Hover, style.Active} {
+		local := style.Drawing
+		style.Drawing = func(ctx *gg.Context) {
+			local(ctx)
+			common(ctx)
+		}
 	}
 }
 
@@ -90,10 +104,13 @@ func (style *HandlerStyle) Rasterize(w, h float64) {
 
 var hovered []*Handler
 
-func HandleHovered(event Event, x, y float64) {
-	for _, hover := range hovered {
+func HandleHovered(_ Event, x, y float64) {
+	for i, hover := range hovered {
 		if !hover.Contains(x, y) {
 			hover.Land()
+			last := len(hovered) - 1
+			hovered[i], hovered[last] = hovered[last], nil
+			hovered = hovered[:last]
 		}
 	}
 }

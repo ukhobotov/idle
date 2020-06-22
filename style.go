@@ -21,7 +21,6 @@ type Border struct {
 	Color     color.RGBA
 	Width     float64
 	Alignment alignment
-	Padding   float64
 }
 
 func (style *Style) Rasterize(w, h float64) {
@@ -52,21 +51,23 @@ func (style *Style) Rasterize(w, h float64) {
 		if style.Border.Alignment == 0 {
 			style.Border.Alignment = Left | Bottom | Right | Top
 		}
-		p := style.Border.Padding
+		ctx.SetColor(style.Border.Color)
 		if style.Border.Alignment.Has(Left) {
-			ctx.DrawLine(p, h-p, p, p)
+			ctx.DrawLine(0, h, 0, 0)
+			ctx.Stroke()
 		}
 		if style.Border.Alignment.Has(Top) {
-			ctx.DrawLine(p, p, w-p, p)
+			ctx.DrawLine(0, 0, w, 0)
+			ctx.Stroke()
 		}
 		if style.Border.Alignment.Has(Right) {
-			ctx.DrawLine(w-p, p, w-p, h-p)
+			ctx.DrawLine(w, 0, w, h)
+			ctx.Stroke()
 		}
 		if style.Border.Alignment.Has(Bottom) {
-			ctx.DrawLine(w-p, h-p, p, h-p)
+			ctx.DrawLine(w, h, 0, h)
+			ctx.Stroke()
 		}
-		ctx.SetColor(style.Border.Color)
-		ctx.Stroke()
 	}
 
 	if style.sprite == nil {

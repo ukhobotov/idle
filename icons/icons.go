@@ -17,7 +17,7 @@ const (
 	g1 float64 = 29 / 32
 )
 
-// var Back = func(style Background) carbon.Drawing {
+// var Back = func(style Style) carbon.Drawing {
 //   iconColor, P, I := style.Props()
 //   return func(ctx *gg.Context) {
 //     ctx.SetColor(iconColor)
@@ -29,7 +29,7 @@ const (
 //   }
 // }
 //
-// var Menu = func(style Background) carbon.Drawing {
+// var Menu = func(style Style) carbon.Drawing {
 //   iconColor, P, I := style.Props()
 //   return func(ctx *gg.Context) {
 //     ctx.SetColor(iconColor)
@@ -43,7 +43,7 @@ const (
 // }
 
 //
-// func Refresh(style Background) carbon.Drawing {
+// func Refresh(style Style) carbon.Drawing {
 //   iconColor, P, I := style.Props()
 //   return func(ctx *gg.Context) {
 //     ctx.SetColor(iconColor)
@@ -61,23 +61,21 @@ const (
 // }
 
 func Play(style Style) carbon.Drawing {
-	iconColor, x, y, I := style.Props()
+	x, y, I := style.Props()
 	return func(ctx *gg.Context) {
 		ctx.NewSubPath()
 		ctx.MoveTo(x+I*l3, y+I*l1)
 		ctx.LineTo(x+I*l3, y+I*g1)
 		ctx.LineTo(x+I*29/32, y+I/2)
 		ctx.ClosePath()
-		ctx.SetColor(iconColor)
 		ctx.SetLineWidth(I / 16)
 		ctx.Stroke()
 	}
 }
 
 func Stop(style Style) carbon.Drawing {
-	iconColor, x, y, I := style.Props()
+	x, y, I := style.Props()
 	return func(ctx *gg.Context) {
-		ctx.SetColor(iconColor)
 		ctx.SetLineWidth(I / 16)
 		ctx.DrawRectangle(x+I*l2, y+I*l2, I*11/16, I*11/16)
 		ctx.Stroke()
@@ -85,9 +83,8 @@ func Stop(style Style) carbon.Drawing {
 }
 
 func Pause(style Style) carbon.Drawing {
-	iconColor, x, y, I := style.Props()
+	x, y, I := style.Props()
 	return func(ctx *gg.Context) {
-		ctx.SetColor(iconColor)
 		ctx.SetLineWidth(I / 16)
 		ctx.DrawRectangle(x+I*l2, y+I*l2, I*3/16, I*11/16)
 		ctx.DrawRectangle(x+I*21/32, y+I*l2, I*3/16, I*11/16)
@@ -96,37 +93,34 @@ func Pause(style Style) carbon.Drawing {
 }
 
 func Down(style Style) carbon.Drawing {
-	C, x, y, I := style.Props()
+	x, y, I := style.Props()
 	return func(ctx *gg.Context) {
 		ctx.MoveTo(x+I*5/32, y+I*11/32)
 		ctx.LineTo(x+I/2, y+I*11/16)
 		ctx.LineTo(x+I*27/32, y+I*11/32)
-		ctx.SetColor(C)
 		ctx.SetLineWidth(I / 16)
 		ctx.Stroke()
 	}
 }
 
 func Exit(style Style) carbon.Drawing {
-	C, x, y, I := style.Props()
+	x, y, I := style.Props()
 	return func(ctx *gg.Context) {
 		ctx.DrawLine(x+I*g3, y+I*l1, x+I*g3, y+I*g1)
 		ctx.DrawLine(x+I*l1, y*I*1/2, x*I*(l1+1/8), y*I*(1/2+1/8))
 		ctx.DrawLine(x+I*l1, y*I*1/2, x*I*(l1+1/8), y*I*(1/2-1/8))
 		ctx.DrawLine(x+I*l1, y*I*1/2, x*I*(g3-1/8), y*I*1/2)
-		ctx.SetColor(C)
 		ctx.SetLineWidth(I / 16)
 		ctx.Stroke()
 	}
 }
 
 func Add(style Style) carbon.Drawing {
-	C, x, y, I := style.Props()
+	x, y, I := style.Props()
 	return func(ctx *gg.Context) {
 		ctx.SetLineWidth(I / 8)
 		ctx.DrawLine(x+I*3/16, y+I/2, x+I*13/16, y+I/2)
 		ctx.DrawLine(x+I/2, y+I*3/16, x+I/2, y+I*13/16)
-		ctx.SetColor(C)
 		ctx.Stroke()
 	}
 }

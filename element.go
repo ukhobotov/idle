@@ -7,7 +7,7 @@ type Element interface {
 	// Contains must tell if given point is inside the object's absolute bounds
 	Contains(x, y float64) bool
 
-	// FitInto must update object's absolute bounds. It receives a container's location
+	// FitInto must Update object's absolute bounds. It receives a container's location
 	FitInto(x1, y1, x2, y2 float64)
 
 	// Rasterize is needed to FitInto graphic sprites contained in frames. It's usually being called after resizing of

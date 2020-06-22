@@ -87,7 +87,7 @@ var (
 	Gray90Hover = hex("#353535")
 	Gray60Hover = hex("#606060")
 
-	// Default Background
+	// Default Style
 	Bg = Gray100
 
 	// ButtonPrimary interactive color; ButtonPrimary button
@@ -101,7 +101,7 @@ var (
 
 	// Container background on Bg; Secondary page background
 	Ui1 = Gray90
-	// Container background on Ui1; `Light` variant Background
+	// Container background on Ui1; `Light` variant Style
 	Ui2 = Gray80
 	// Subtle border; Tertiary background
 	Ui3 = Gray80
@@ -127,6 +127,11 @@ var (
 	Icon2 = Gray30
 	// Icons on interactive colors; Icons on non-ui colors
 	Icon3 = White
+
+	// Inverse text color; Inverse icon color
+	Inverse1 = Gray100
+	// High contrast backgrounds; High contrast elements
+	Inverse2 = Gray10
 
 	// Interactive1 hover
 	HoverPrimary = Blue60Hover
