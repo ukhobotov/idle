@@ -9,6 +9,7 @@ import (
 )
 
 type Window struct {
+	Title         string
 	Width, Height float64
 	Fullscreen    bool
 	Root          Element
@@ -35,7 +36,7 @@ func (win *Window) Show() {
 
 		// creating a window
 		win.window, err = pixelgl.NewWindow(pixelgl.WindowConfig{
-			Title:     "Four Suns",
+			Title:     win.Title,
 			Bounds:    pixel.R(0, 0, win.Width, win.Height),
 			VSync:     true,
 			Resizable: true,
