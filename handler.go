@@ -28,25 +28,26 @@ type (
 )
 
 func (handler *Handler) Handle(event Event, _, _ float64) {
-	switch event {
+	switch {
 
-	case Press.The(pixelgl.MouseButtonLeft):
+	case event == Press.The(pixelgl.MouseButtonLeft):
 		if handler.OnPress != nil {
 			handler.OnPress(handler)
 		}
-
 		handler.pressed = true
 		handler.Update()
 
-	case Release.The(pixelgl.MouseButtonLeft):
-		if handler.OnRelease != nil {
-			handler.OnRelease(handler)
+	case event == Release.The(pixelgl.MouseButtonLeft):
+		if handler.pressed {
+			if handler.OnRelease != nil {
+				handler.OnRelease(handler)
+			}
+			handler.pressed = false
+			handler.Update()
 		}
-		handler.hovered = true
-		handler.pressed = false
-		handler.Update()
+		fallthrough
 
-	case MoveEvent:
+	case event.Action == Move:
 		if !handler.hovered {
 			if handler.OnHover != nil {
 				handler.OnHover(handler)
@@ -104,7 +105,10 @@ func (style *HandlerStyle) Rasterize(w, h float64) {
 
 var hovered []*Handler
 
-func HandleHovered(_ Event, x, y float64) {
+func HandleHovered(event Event, x, y float64) {
+	if event.Action == Move && event.Button != NilButton {
+		return
+	}
 	for i, hover := range hovered {
 		if !hover.Contains(x, y) {
 			hover.Land()

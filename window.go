@@ -78,6 +78,7 @@ func (win *Window) Show() {
 				}
 				if win.window.JustReleased(button) {
 					win.Root.Handle(Release.The(button), x, y)
+					HandleHovered(Release.The(pressed), x, y)
 				}
 			}
 			if x != x0 || y != y0 {
