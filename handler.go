@@ -13,12 +13,13 @@ type (
 
 		OnPress, OnRelease, OnHover func(this *Handler)
 
-		background, foreground              *Style
-		hovered, pressed, focused, Disabled bool
+		background, foreground *Style
+
+		hovered, pressed, selected, Disabled bool
 	}
 
 	HandlerStyle struct {
-		Idle, Hover, Active, Focused, Disabled *Style
+		Idle, Hover, Active, Selected, Disabled *Style
 	}
 
 	Hover interface {
@@ -38,7 +39,7 @@ func (handler *Handler) Handle(event Event, _, _ float64) {
 			handler.OnPress(handler)
 		}
 		handler.pressed = true
-		handler.focused = true
+		handler.selected = true
 		focused = handler
 		handler.Update()
 
@@ -86,7 +87,7 @@ func (handler *Handler) Defocus() {
 	if handler == nil {
 		return
 	}
-	handler.focused = false
+	handler.selected = false
 	handler.Update()
 }
 
@@ -100,8 +101,8 @@ func (handler *Handler) Update() {
 		handler.background = handler.Style.Idle
 	}
 	switch {
-	case handler.focused:
-		handler.foreground = handler.Style.Focused
+	case handler.selected:
+		handler.foreground = handler.Style.Selected
 	case handler.Disabled:
 		handler.foreground = handler.Style.Disabled
 	default:
@@ -123,7 +124,7 @@ func (style HandlerStyle) Rasterize(w, h float64) {
 	style.Idle.Rasterize(w, h)
 	style.Hover.Rasterize(w, h)
 	style.Active.Rasterize(w, h)
-	style.Focused.Rasterize(w, h)
+	style.Selected.Rasterize(w, h)
 	style.Disabled.Rasterize(w, h)
 }
 
@@ -144,52 +145,3 @@ func HandleHovered(event Event, x, y float64) {
 }
 
 var focused *Handler
-
-var (
-	ButtonPrimary = HandlerStyle{
-		Idle: &Style{
-			Fill: Interactive1,
-		},
-		Hover: &Style{
-			Fill: HoverPrimary,
-		},
-		Active: &Style{
-			Fill: ActivePrimary,
-		},
-	}
-	ButtonPrimaryText = HandlerStyle{
-		Idle: &Style{
-			Fill: Interactive1,
-		},
-		Hover: &Style{
-			Fill: HoverPrimaryText,
-		},
-		Active: &Style{
-			Fill: ActivePrimary,
-		},
-	}
-	ButtonSecondary = HandlerStyle{
-		Idle: &Style{
-			Fill: Interactive2,
-		},
-		Hover: &Style{
-			Fill: HoverSecondary,
-		},
-		Active: &Style{
-			Fill: ActiveSecondary,
-		},
-	}
-	ButtonTertiary = HandlerStyle{
-		Idle: &Style{
-			Border: Border{
-				Color: Interactive3,
-			},
-		},
-		Hover: &Style{
-			Fill: HoverTertiary,
-		},
-		Active: &Style{
-			Fill: ActiveTertiary,
-		},
-	}
-)

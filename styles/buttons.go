@@ -9,6 +9,30 @@ import (
 )
 
 var (
+	PrimaryButton = carbon.HandlerStyle{
+		Idle: &carbon.Style{
+			Fill: carbon.Interactive1,
+		},
+		Hover: &carbon.Style{
+			Fill: carbon.HoverPrimary,
+		},
+		Active: &carbon.Style{
+			Fill: carbon.ActivePrimary,
+		},
+		Selected: ButtonSelected,
+	}
+	SecondaryButton = carbon.HandlerStyle{
+		Idle: &carbon.Style{
+			Fill: carbon.Interactive2,
+		},
+		Hover: &carbon.Style{
+			Fill: carbon.HoverSecondary,
+		},
+		Active: &carbon.Style{
+			Fill: carbon.ActiveSecondary,
+		},
+		Selected: ButtonSelected,
+	}
 	TertiaryButton = carbon.HandlerStyle{
 		Idle: &carbon.Style{
 			Border: carbon.Border{Color: carbon.Interactive3},
@@ -28,10 +52,10 @@ var (
 				ctx.SetColor(carbon.Inverse1)
 			},
 		},
-		Focused: ButtonFocus,
+		Selected: ButtonSelected,
 	}
 
-	ButtonFocus = &carbon.Style{
+	ButtonSelected = &carbon.Style{
 		Border: carbon.Border{
 			Color: carbon.Interactive4,
 			Width: 2,
