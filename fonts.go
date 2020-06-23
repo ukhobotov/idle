@@ -29,15 +29,29 @@ func LoadFont(path string) *truetype.Font {
 	return ttf
 }
 
-func defaultFont() *truetype.Font {
-	// ttf, _ := truetype.Parse() TODO: fix
-	return nil
-}
-
 var (
-	Regular = LoadFont("IBMPlexSans-Regular.ttf")
-	Bold    = LoadFont("IBMPlexSans-Bold.ttf")
+	Regular *truetype.Font
+	Bold    *truetype.Font
 )
+
+func init() {
+	regular, err := ibmplexsansRegularTtfBytes()
+	if err != nil {
+		panic(err)
+	}
+	Regular, err = truetype.Parse(regular)
+	if err != nil {
+		panic(err)
+	}
+	bold, err := ibmplexsansBoldTtfBytes()
+	if err != nil {
+		panic(err)
+	}
+	Bold, err = truetype.Parse(bold)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func NewFace(ttf *truetype.Font, size float64) font.Face {
 	face := truetype.NewFace(ttf, &truetype.Options{
