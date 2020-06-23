@@ -8,7 +8,10 @@ import (
 	"github.com/usualhuman/carbon"
 )
 
+// Button are elements user primarily for actions. There are some kinds of it that might be used for special purposes.
+
 var (
+	// PrimaryButton is needed for the principal call to action on the page.
 	PrimaryButton = carbon.HandlerStyle{
 		Idle: &carbon.Style{
 			Fill: carbon.Interactive1,
@@ -19,8 +22,13 @@ var (
 		Active: &carbon.Style{
 			Fill: carbon.ActivePrimary,
 		},
-		Selected: ButtonSelected,
+		Focus: ButtonFocus,
+		Common: func(ctx *gg.Context) {
+			ctx.SetColor(carbon.Text4)
+		},
 	}
+
+	// SecondaryButton is needed for secondary actions on each page.
 	SecondaryButton = carbon.HandlerStyle{
 		Idle: &carbon.Style{
 			Fill: carbon.Interactive2,
@@ -31,8 +39,10 @@ var (
 		Active: &carbon.Style{
 			Fill: carbon.ActiveSecondary,
 		},
-		Selected: ButtonSelected,
+		Focus: ButtonFocus,
 	}
+
+	// TertiaryButton is needed for some additional actions.
 	TertiaryButton = carbon.HandlerStyle{
 		Idle: &carbon.Style{
 			Border: carbon.Border{Color: carbon.Interactive3},
@@ -52,10 +62,10 @@ var (
 				ctx.SetColor(carbon.Inverse1)
 			},
 		},
-		Selected: ButtonSelected,
+		Focus: ButtonFocus,
 	}
 
-	ButtonSelected = &carbon.Style{
+	ButtonFocus = &carbon.Style{
 		Border: carbon.Border{
 			Color: carbon.Interactive4,
 			Width: 2,

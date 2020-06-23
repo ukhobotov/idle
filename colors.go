@@ -96,7 +96,7 @@ var (
 	Interactive2 = new(color.RGBA)
 	// Tertiary button
 	Interactive3 = new(color.RGBA)
-	// Selected elements; Activated elements; Accent tools
+	// Focus elements; Activated elements; Accent tools
 	Interactive4 = new(color.RGBA)
 
 	// Container background on Bg; Secondary page background

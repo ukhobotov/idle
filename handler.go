@@ -6,27 +6,25 @@ import (
 )
 
 type (
+	// Handler is a basic element for mouse action handling as press, release or hover.
+	// It also can be styled for different states using HandlerStyle. Most common are stored in styles package.
 	Handler struct {
 		Location
-		Style HandlerStyle
-		Final Drawing
+		Style    HandlerStyle
+		Final    Drawing
+		Disabled bool
 
 		OnPress, OnRelease, OnHover func(this *Handler)
 
-		background, foreground *Style
-
-		hovered, pressed, selected, Disabled bool
+		background, foreground     *Style
+		hovered, pressed, selected bool
 	}
 
+	// HandlerStyle is a set of styles for the Handler.
 	HandlerStyle struct {
-		Idle, Hover, Active, Selected, Disabled *Style
+		Idle, Hover, Active, Focus, Disabled *Style
 
 		Common Drawing
-	}
-
-	Hover interface {
-		Contains(x, y float64) bool
-		Land()
 	}
 )
 
@@ -104,7 +102,7 @@ func (handler *Handler) Update() {
 	}
 	switch {
 	case handler.selected:
-		handler.foreground = handler.Style.Selected
+		handler.foreground = handler.Style.Focus
 	case handler.Disabled:
 		handler.foreground = handler.Style.Disabled
 	default:
@@ -133,7 +131,7 @@ func (style HandlerStyle) Rasterize(w, h float64) {
 	style.Idle.Rasterize(w, h)
 	style.Hover.Rasterize(w, h)
 	style.Active.Rasterize(w, h)
-	style.Selected.Rasterize(w, h)
+	style.Focus.Rasterize(w, h)
 	style.Disabled.Rasterize(w, h)
 }
 

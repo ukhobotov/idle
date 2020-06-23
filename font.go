@@ -11,7 +11,7 @@ import (
 func LoadFont(path string) *truetype.Font {
 	file, err := os.Open(path)
 	if err != nil {
-		return defaultFont()
+		panic(err)
 	}
 	var (
 		data      []byte
@@ -24,7 +24,7 @@ func LoadFont(path string) *truetype.Font {
 	}
 	ttf, err := truetype.Parse(data)
 	if err != nil {
-		return nil
+		panic(err)
 	}
 	return ttf
 }
@@ -34,6 +34,11 @@ func defaultFont() *truetype.Font {
 	return nil
 }
 
+var (
+	Regular = LoadFont("IBMPlexSans-Regular.ttf")
+	Bold    = LoadFont("IBMPlexSans-Bold.ttf")
+)
+
 func NewFace(ttf *truetype.Font, size float64) font.Face {
 	face := truetype.NewFace(ttf, &truetype.Options{
 		Size: size,
@@ -41,8 +46,3 @@ func NewFace(ttf *truetype.Font, size float64) font.Face {
 	recover()
 	return face
 }
-
-var (
-	Regular = LoadFont("IBMPlexSans-Regular.ttf")
-	Bold    = LoadFont("IBMPlexSans-Bold.ttf")
-)
