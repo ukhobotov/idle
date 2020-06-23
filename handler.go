@@ -8,8 +8,8 @@ import (
 type (
 	Handler struct {
 		Location
-		Style  HandlerStyle
-		Common Drawing
+		Style HandlerStyle
+		Final Drawing
 
 		OnPress, OnRelease, OnHover func(this *Handler)
 
@@ -20,6 +20,8 @@ type (
 
 	HandlerStyle struct {
 		Idle, Hover, Active, Selected, Disabled *Style
+
+		Common Drawing
 	}
 
 	Hover interface {
@@ -66,7 +68,7 @@ func (handler *Handler) Handle(event Event, _, _ float64) {
 }
 
 func (handler *Handler) Rasterize() {
-	handler.Style.finish(handler.Common)
+	handler.Style.finish(handler.Final)
 	handler.Style.Rasterize(handler.Size())
 	handler.Update()
 }
@@ -110,12 +112,19 @@ func (handler *Handler) Update() {
 	}
 }
 
-func (style HandlerStyle) finish(common Drawing) {
-	for _, style := range []*Style{style.Idle, style.Hover, style.Active} {
-		local := style.Drawing
-		style.Drawing = func(ctx *gg.Context) {
-			local(ctx)
-			common(ctx)
+func (style HandlerStyle) finish(final Drawing) {
+	for _, state := range []*Style{style.Idle, style.Hover, style.Active, style.Disabled} {
+		local := state.Drawing
+		state.Drawing = func(ctx *gg.Context) {
+			if local != nil {
+				local(ctx)
+			}
+			if style.Common != nil {
+				style.Common(ctx)
+			}
+			if final != nil {
+				final(ctx)
+			}
 		}
 	}
 }
