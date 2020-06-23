@@ -18,6 +18,7 @@ type Window struct {
 }
 
 func (win *Window) Show() {
+	shown = append(shown, win)
 	pixelgl.Run(func() {
 		var (
 			err    error
@@ -45,7 +46,7 @@ func (win *Window) Show() {
 			panic(err)
 		}
 
-		win.UpdateRoot()
+		win.Update()
 
 		start := time.Now()
 		frames := 0
@@ -58,7 +59,7 @@ func (win *Window) Show() {
 			if w1, h1 := win.window.Bounds().Size().XY(); w1 != win.Width || h1 != win.Height {
 				win.Width, win.Height = w1, h1
 				// TODO: add minsize
-				win.UpdateRoot()
+				win.Update()
 			}
 
 			// transmitting mouse events
@@ -107,10 +108,25 @@ func (win *Window) Show() {
 			win.window.Clear(Bg)
 			win.Root.Draw(win)
 		}
+		for i := range shown {
+			if shown[i] == win {
+				last := len(shown) - 1
+				shown[i], shown[last] = shown[last], nil
+				shown = shown[:last]
+			}
+		}
 	})
 }
 
-func (win *Window) UpdateRoot() {
+func (win *Window) Update() {
 	win.Root.FitInto(0, 0, win.Width, win.Height)
 	win.Root.Rasterize()
+}
+
+var shown []*Window
+
+func UpdateShown() {
+	for _, window := range shown {
+		window.Update()
+	}
 }

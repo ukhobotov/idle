@@ -6,8 +6,8 @@ import (
 )
 
 var (
-	Black       = color.RGBA{0, 0, 0, 255}
-	White       = color.RGBA{255, 255, 255, 255}
+	Black       = color.RGBA{A: 255}
+	White       = color.RGBA{R: 255, G: 255, B: 255, A: 255}
 	Transparent = color.RGBA{}
 
 	Red70 = hex("#a2191f")
@@ -87,72 +87,117 @@ var (
 	Gray90Hover = hex("#353535")
 	Gray60Hover = hex("#606060")
 
-	// Default Style
-	Bg = Gray100
+	// Default background
+	Bg = &Gray100
 
 	// ButtonPrimary interactive color; ButtonPrimary button
-	Interactive1 = Blue60
+	Interactive1 = new(color.RGBA)
 	// Secondary interactive color; Secondary button
-	Interactive2 = Gray60
+	Interactive2 = new(color.RGBA)
 	// Tertiary button
-	Interactive3 = White
+	Interactive3 = new(color.RGBA)
 	// Selected elements; Activated elements; Accent tools
-	Interactive4 = Blue50
+	Interactive4 = new(color.RGBA)
 
 	// Container background on Bg; Secondary page background
-	Ui1 = Gray90
+	Ui1 = new(color.RGBA)
 	// Container background on Ui1; `Light` variant Style
-	Ui2 = Gray80
+	Ui2 = new(color.RGBA)
 	// Subtle border; Tertiary background
-	Ui3 = Gray80
+	Ui3 = new(color.RGBA)
 	// Medium contrast border
-	Ui4 = Gray60
+	Ui4 = new(color.RGBA)
 	// High contrast border; Emphasis elements
-	Ui5 = Gray10
+	Ui5 = new(color.RGBA)
 
 	// ButtonPrimary text
-	Text1 = Gray10
+	Text1 = new(color.RGBA)
 	// Secondary text
-	Text2 = Gray30
+	Text2 = new(color.RGBA)
 	// Placeholder text
-	Text3 = Gray60
+	Text3 = new(color.RGBA)
 	// Text on interactive colors
-	Text4 = White
+	Text4 = new(color.RGBA)
 	// Tertiary text
-	Text5 = Gray50
+	Text5 = new(color.RGBA)
 
 	// ButtonPrimary icons
-	Icon1 = Gray10
+	Icon1 = new(color.RGBA)
 	// Secondary icons
-	Icon2 = Gray30
+	Icon2 = new(color.RGBA)
 	// Icons on interactive colors; Icons on non-ui colors
-	Icon3 = White
+	Icon3 = new(color.RGBA)
 
 	// Inverse text color; Inverse icon color
-	Inverse1 = Gray100
+	Inverse1 = new(color.RGBA)
 	// High contrast backgrounds; High contrast elements
-	Inverse2 = Gray10
+	Inverse2 = new(color.RGBA)
 
 	// Interactive1 hover
-	HoverPrimary = Blue60Hover
+	HoverPrimary = new(color.RGBA)
 	// Interactive1 text hover
-	HoverPrimaryText = Blue70
+	HoverPrimaryText = new(color.RGBA)
 	// Interactive2 hover
-	HoverSecondary = Gray60Hover
+	HoverSecondary = new(color.RGBA)
 	// Interactive3 hover; Inverse1 hover
-	HoverTertiary = Gray10
+	HoverTertiary = new(color.RGBA)
 	// Ui1 hover; Ui2 hover; Transparent background hover
-	HoverUi = Gray90Hover
+	HoverUi = new(color.RGBA)
 
 	// Interactive1 active
-	ActivePrimary = Blue80
+	ActivePrimary = new(color.RGBA)
 	// Interactive2 active; Inverse1 active
-	ActiveSecondary = Gray80
+	ActiveSecondary = new(color.RGBA)
 	// Interactive3 active
-	ActiveTertiary = Gray30
+	ActiveTertiary = new(color.RGBA)
 	// Ui1 active; Ui2 active
-	ActiveUi = Gray70
+	ActiveUi = new(color.RGBA)
 )
+
+func init() {
+	SetGray100Theme()
+}
+
+func SetGray100Theme() {
+	*Bg = Gray100
+
+	*Interactive1 = Blue60
+	*Interactive2 = Gray60
+	*Interactive3 = White
+	*Interactive4 = Blue50
+
+	*Ui1 = Gray90
+	*Ui2 = Gray80
+	*Ui3 = Gray80
+	*Ui4 = Gray60
+	*Ui5 = Gray10
+
+	*Text1 = Gray10
+	*Text2 = Gray30
+	*Text3 = Gray60
+	*Text4 = White
+	*Text5 = Gray50
+
+	*Icon1 = Gray10
+	*Icon2 = Gray30
+	*Icon3 = White
+
+	*Inverse1 = Gray100
+	*Inverse2 = Gray10
+
+	*HoverPrimary = Blue60Hover
+	*HoverPrimaryText = Blue70
+	*HoverSecondary = Gray60Hover
+	*HoverTertiary = Gray10
+	*HoverUi = Gray90Hover
+
+	*ActivePrimary = Blue80
+	*ActiveSecondary = Gray80
+	*ActiveTertiary = Gray30
+	*ActiveUi = Gray70
+
+	UpdateShown()
+}
 
 func hex(hex string) color.RGBA {
 	if hex[0] != '#' || len(hex) != 7 {

@@ -5,6 +5,7 @@ import (
 
 	"carbon"
 	"carbon/icons"
+	"carbon/styles"
 )
 
 func main() {
@@ -20,32 +21,7 @@ func main() {
 						Right:  carbon.Margin(16 + 192),
 						Bottom: carbon.Margin(-16 - 48),
 					},
-					Style: carbon.HandlerStyle{
-						Idle: &carbon.Style{
-							Border: carbon.Border{Color: carbon.Interactive3},
-							Drawing: func(ctx *gg.Context) {
-								ctx.SetColor(carbon.Text4)
-							},
-						},
-						Hover: &carbon.Style{
-							Fill: carbon.HoverTertiary,
-							Drawing: func(ctx *gg.Context) {
-								ctx.SetColor(carbon.Inverse1)
-							},
-						},
-						Active: &carbon.Style{
-							Fill: carbon.ActiveTertiary,
-							Drawing: func(ctx *gg.Context) {
-								ctx.SetColor(carbon.Inverse1)
-							},
-						},
-						Focused: &carbon.Style{
-							Border: carbon.Border{
-								Color: carbon.Blue50,
-								Width: 2,
-							},
-						},
-					},
+					Style: styles.TertiaryButton,
 					Common: func(ctx *gg.Context) {
 						ctx.SetFontFace(carbon.NewFace(carbon.Regular, 16))
 						ctx.DrawString("Look I'm tertiary!", 16, 48-19)

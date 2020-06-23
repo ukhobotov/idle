@@ -8,7 +8,7 @@ import (
 )
 
 type Style struct {
-	Fill    color.RGBA
+	Fill    *color.RGBA
 	Drawing Drawing
 	Border  Border
 
@@ -18,7 +18,7 @@ type Style struct {
 type Drawing func(ctx *gg.Context)
 
 type Border struct {
-	Color     color.RGBA
+	Color     *color.RGBA
 	Width     float64
 	Alignment alignment
 }
@@ -27,13 +27,13 @@ func (style *Style) Rasterize(w, h float64) {
 	if style == nil {
 		return
 	}
-	if style.Fill == Transparent && style.Drawing == nil && style.Border == (Border{}) {
+	if style.Fill == nil && style.Drawing == nil && style.Border == (Border{}) {
 		return
 	}
 
 	ctx := gg.NewContext(int(w), int(h))
 
-	if style.Fill != Transparent {
+	if style.Fill != nil {
 		ctx.SetColor(style.Fill)
 		ctx.DrawRectangle(0, 0, w, h)
 		ctx.Fill()
@@ -43,7 +43,7 @@ func (style *Style) Rasterize(w, h float64) {
 		style.Drawing(ctx)
 	}
 
-	if style.Border.Color != Transparent {
+	if style.Border.Color != nil {
 		if style.Border.Width == 0 {
 			style.Border.Width = 1
 		}

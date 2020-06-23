@@ -12,7 +12,7 @@ import (
 
 type Text struct {
 	Bounds
-	Color     color.RGBA
+	Color     *color.RGBA
 	Text      string
 	TextSize  float64
 	Font      *truetype.Font
@@ -54,7 +54,7 @@ func (txt *Text) Rasterize() {
 }
 
 func (txt *Text) Update() {
-	if txt.Color == Transparent {
+	if *txt.Color == Transparent {
 		txt.Color = Text1
 	}
 	txt.text.Color = txt.Color
