@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/fogleman/gg"
 
-	"carbon"
-	"carbon/icons"
-	"carbon/styles"
+	"github.com/usualhuman/carbon"
+	"github.com/usualhuman/carbon/icons"
+	"github.com/usualhuman/carbon/styles"
 )
 
 func main() {

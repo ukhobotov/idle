@@ -5,7 +5,7 @@ import (
 
 	"github.com/fogleman/gg"
 
-	"carbon"
+	"github.com/usualhuman/carbon"
 )
 
 var (

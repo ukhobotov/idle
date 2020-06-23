@@ -3,7 +3,7 @@ package icons
 import (
 	"github.com/fogleman/gg"
 
-	"carbon"
+	"github.com/usualhuman/carbon"
 )
 
 type Icon func(x, y, a float64) carbon.Drawing

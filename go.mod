@@ -1,6 +1,6 @@
 go 1.14
 
-module carbon
+module github.com/usualhuman/carbon
 
 require (
 	github.com/faiface/pixel v0.9.0
