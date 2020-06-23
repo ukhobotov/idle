@@ -49,11 +49,7 @@ func main() {
 					Common: func(ctx *gg.Context) {
 						ctx.SetFontFace(carbon.NewFace(carbon.Regular, 16))
 						ctx.DrawString("Look I'm tertiary!", 16, 48-19)
-						icons.Add(icons.Style{
-							Size: 16,
-							X0:   192 - 16 - 16,
-							Y0:   16,
-						})(ctx)
+						icons.Add(float64(ctx.Width())-32, 16, 16)(ctx)
 					},
 				},
 			},
