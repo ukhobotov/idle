@@ -14,7 +14,7 @@ func main() {
 		Root: &carbon.Container{
 			Content: []carbon.Element{
 				&carbon.Handler{
-					Location: carbon.Location{
+					Bounds: carbon.Bounds{
 						Left:   carbon.Margin(16),
 						Top:    carbon.Margin(-16),
 						Right:  carbon.Margin(16 + 192),
@@ -37,6 +37,12 @@ func main() {
 							Fill: carbon.ActiveTertiary,
 							Drawing: func(ctx *gg.Context) {
 								ctx.SetColor(carbon.Inverse1)
+							},
+						},
+						Focused: &carbon.Style{
+							Border: carbon.Border{
+								Color: carbon.Blue50,
+								Width: 2,
 							},
 						},
 					},

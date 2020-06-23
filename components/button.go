@@ -27,4 +27,4 @@ const (
 	Tertiary
 )
 
-// func Button(loc carbon.Location, text string, textX, textY, text)
+// func Button(loc carbon.Bounds, text string, textX, textY, text)

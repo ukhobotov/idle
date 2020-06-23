@@ -1,13 +1,13 @@
 package carbon
 
 type Container struct {
-	Location
+	Bounds
 	Style   *Style
 	Content []Element
 }
 
 func (ctr *Container) FitInto(x1, y1, x2, y2 float64) {
-	ctr.Location.FitInto(x1, y1, x2, y2)
+	ctr.Bounds.FitInto(x1, y1, x2, y2)
 	for _, element := range ctr.Content {
 		element.FitInto(ctr.Absolute())
 	}
@@ -26,7 +26,7 @@ func (ctr *Container) Handle(event Event, x, y float64) {
 
 func (ctr *Container) Rasterize() {
 	if ctr.Style != nil {
-		ctr.Style.Rasterize(ctr.Location.Size())
+		ctr.Style.Rasterize(ctr.Bounds.Size())
 	}
 	for _, element := range ctr.Content {
 		element.Rasterize()
@@ -35,7 +35,7 @@ func (ctr *Container) Rasterize() {
 
 func (ctr *Container) Draw(win *Window) {
 	if ctr.Style != nil {
-		x, y := ctr.Location.Center()
+		x, y := ctr.Bounds.Center()
 		ctr.Style.Draw(win, x, y)
 	}
 	for _, element := range ctr.Content {

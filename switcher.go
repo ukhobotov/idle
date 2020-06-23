@@ -1,7 +1,7 @@
 package carbon
 
 type Switcher struct {
-	Location
+	Bounds
 	Style   *Style
 	Content []Element
 	Current Element

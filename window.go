@@ -74,6 +74,10 @@ func (win *Window) Show() {
 					pressed = button
 				}
 				if win.window.JustPressed(button) {
+					if focused != nil {
+						focused.Defocus()
+						focused = nil
+					}
 					win.Root.Handle(Press.The(button), x, y)
 				}
 				if win.window.JustReleased(button) {
