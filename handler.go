@@ -112,6 +112,9 @@ func (handler *Handler) Update() {
 
 func (style HandlerStyle) finish(final Drawing) {
 	for _, state := range []*Style{style.Idle, style.Hover, style.Active, style.Disabled} {
+		if state == nil {
+			continue
+		}
 		local := state.Drawing
 		state.Drawing = func(ctx *gg.Context) {
 			if local != nil {
