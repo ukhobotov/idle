@@ -4,10 +4,10 @@ package carbon
 // order. Commonly every ui element needs to locate, transmit events, FitInto sprites and draw.
 type Element interface {
 
-	// Contains must tell if given point is inside the object's absolute bounds
+	// Contains must tell if given point is inside the object's Absolute bounds
 	Contains(x, y float64) bool
 
-	// FitInto must Update object's absolute bounds. It receives a container's location
+	// FitInto must Update object's Absolute bounds. It receives a container's location
 	FitInto(x1, y1, x2, y2 float64)
 
 	// Rasterize is needed to FitInto graphic sprites contained in frames. It's usually being called after resizing of

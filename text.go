@@ -11,7 +11,7 @@ import (
 )
 
 type Text struct {
-	Bounds
+	Location
 	Color     *color.RGBA
 	Text      string
 	TextSize  float64

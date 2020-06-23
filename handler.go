@@ -7,7 +7,7 @@ import (
 
 type (
 	Handler struct {
-		Bounds
+		Location
 		Style  HandlerStyle
 		Common Drawing
 

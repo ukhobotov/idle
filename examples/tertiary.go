@@ -15,7 +15,7 @@ func main() {
 		Root: &carbon.Container{
 			Content: []carbon.Element{
 				&carbon.Handler{
-					Bounds: carbon.Bounds{
+					Location: carbon.Location{
 						Left:   carbon.Margin(16),
 						Top:    carbon.Margin(-16),
 						Right:  carbon.Margin(16 + 192),
