@@ -25,3 +25,8 @@ func TestSwitcher_FitInto(t *testing.T) {
 	assert.Equal(t, 22.0, ctr.x2)
 	assert.Equal(t, 48.0, ctr.y2)
 }
+
+func TestSwitcher_Draw(t *testing.T) {
+	(&Switcher{}).Draw(nil)
+	assert.Nil(t, recover())
+}

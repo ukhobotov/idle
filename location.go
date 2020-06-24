@@ -40,7 +40,7 @@ func (loc *Location) FitInto(x1, y1, x2, y2 float64) {
 func (cst Constraint) Absolute(min, max float64, flipZero bool) float64 {
 	if cst.Grid == 0 {
 		if !flipZero {
-			return min + math.Mod(+cst.Margin, max-min)
+			return min + math.Mod(cst.Margin, max-min)
 		} else {
 			return max - math.Mod(max-min-cst.Margin, max-min)
 		}
