@@ -28,7 +28,7 @@ func (switcher *Switcher) Handle(event Event, x, y float64) {
 func (switcher *Switcher) Draw(win *Window) {
 	x, y := switcher.Center()
 	switcher.Style.Draw(win, x, y)
-	if switcher.Content != nil {
+	if switcher.Current != nil {
 		switcher.Current.Draw(win)
 	}
 }

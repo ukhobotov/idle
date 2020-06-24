@@ -27,6 +27,8 @@ func TestSwitcher_FitInto(t *testing.T) {
 }
 
 func TestSwitcher_Draw(t *testing.T) {
-	(&Switcher{}).Draw(nil)
-	assert.Nil(t, recover())
+	defer func(t *testing.T) {
+		assert.Nil(t, recover())
+	}(t)
+	(&Switcher{Content: []Element{&Container{}}}).Draw(nil)
 }
