@@ -15,7 +15,7 @@ func TestSwitcher_FitInto(t *testing.T) {
 			Right:  Margin(18),
 			Top:    Margin(-52),
 		},
-		Content: []Element{
+		Elements: []Element{
 			ctr,
 		},
 	}
@@ -26,9 +26,16 @@ func TestSwitcher_FitInto(t *testing.T) {
 	assert.Equal(t, 48.0, ctr.y2)
 }
 
+func TestSwitcher_Handle(t *testing.T) {
+	defer func(t *testing.T) {
+		assert.Nil(t, recover())
+	}(t)
+	(&Switcher{Elements: []Element{&Container{}}}).Handle(Event{}, 0, 0)
+}
+
 func TestSwitcher_Draw(t *testing.T) {
 	defer func(t *testing.T) {
 		assert.Nil(t, recover())
 	}(t)
-	(&Switcher{Content: []Element{&Container{}}}).Draw(nil)
+	(&Switcher{Elements: []Element{&Container{}}}).Draw(nil)
 }
