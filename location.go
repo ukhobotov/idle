@@ -1,5 +1,7 @@
 package carbon
 
+import "math"
+
 type (
 	Location struct {
 		Left, Bottom, Right, Top Constraint
@@ -29,21 +31,21 @@ func (loc *Location) Absolute() (x1, y1, x2, y2 float64) {
 }
 
 func (loc *Location) FitInto(x1, y1, x2, y2 float64) {
-	loc.x1 = loc.Left.Absolute(x1, x2, x1)
-	loc.y1 = loc.Bottom.Absolute(y1, y2, y1)
-	loc.x2 = loc.Right.Absolute(x1, x2, x2)
-	loc.y2 = loc.Top.Absolute(y1, y2, y2)
+	loc.x1 = loc.Left.Absolute(x1, x2, false)
+	loc.y1 = loc.Bottom.Absolute(y1, y2, false)
+	loc.x2 = loc.Right.Absolute(x1, x2, true)
+	loc.y2 = loc.Top.Absolute(y1, y2, true)
 }
 
-func (cst Constraint) Absolute(min, max, dft float64) float64 {
-	abs := min + cst.Grid*(max-min) + cst.Margin
-	if abs == 0 {
-		return dft
+func (cst Constraint) Absolute(min, max float64, flipZero bool) float64 {
+	if cst.Grid == 0 {
+		if !flipZero {
+			return min + math.Mod(+cst.Margin, max-min)
+		} else {
+			return max - math.Mod(-cst.Margin, max-min)
+		}
 	}
-	if abs < 0 {
-		abs += max - min
-	}
-	return abs
+	return min + cst.Grid*(max-min) + cst.Margin
 }
 
 func Margin(margin float64) Constraint {
