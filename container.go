@@ -25,19 +25,15 @@ func (ctr *Container) Handle(event Event, x, y float64) {
 }
 
 func (ctr *Container) Rasterize() {
-	if ctr.Style != nil {
-		ctr.Style.Rasterize(ctr.Location.Size())
-	}
+	ctr.Style.Rasterize(ctr.Location.Size())
 	for _, element := range ctr.Content {
 		element.Rasterize()
 	}
 }
 
 func (ctr *Container) Draw(win *Window) {
-	if ctr.Style != nil {
-		x, y := ctr.Location.Center()
-		ctr.Style.Draw(win, x, y)
-	}
+	x, y := ctr.Location.Center()
+	ctr.Style.Draw(win, x, y)
 	for _, element := range ctr.Content {
 		element.Draw(win)
 	}

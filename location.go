@@ -42,7 +42,7 @@ func (cst Constraint) Absolute(min, max float64, flipZero bool) float64 {
 		if !flipZero {
 			return min + math.Mod(+cst.Margin, max-min)
 		} else {
-			return max - math.Mod(-cst.Margin, max-min)
+			return max - math.Mod(max-min-cst.Margin, max-min)
 		}
 	}
 	return min + cst.Grid*(max-min) + cst.Margin

@@ -28,7 +28,7 @@ func (style *Style) Rasterize(w, h float64) {
 	if style == nil {
 		return
 	}
-	if w == 0 || h == 0 {
+	if !(w > 0 && h > 0) {
 		panic(fmt.Errorf("incorrect size: %g, %g", w, h))
 	}
 	if style.Fill == nil && style.Drawing == nil && style.Border == (Border{}) {

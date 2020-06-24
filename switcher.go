@@ -7,10 +7,15 @@ type Switcher struct {
 	Current Element
 }
 
-func (switcher *Switcher) Rasterize() {
-	if switcher.Style != nil {
-		switcher.Style.Rasterize(switcher.Size())
+func (switcher *Switcher) FitInto(x1, y1, x2, y2 float64) {
+	switcher.Location.FitInto(x1, y1, x2, y2)
+	for _, element := range switcher.Content {
+		element.FitInto(switcher.Location.Absolute())
 	}
+}
+
+func (switcher *Switcher) Rasterize() {
+	switcher.Style.Rasterize(switcher.Size())
 	for _, element := range switcher.Content {
 		element.Rasterize()
 	}
@@ -23,5 +28,5 @@ func (switcher *Switcher) Handle(event Event, x, y float64) {
 func (switcher *Switcher) Draw(win *Window) {
 	x, y := switcher.Center()
 	switcher.Style.Draw(win, x, y)
-	switcher.Current.Draw(nil)
+	switcher.Current.Draw(win)
 }

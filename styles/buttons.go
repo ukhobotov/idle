@@ -40,6 +40,9 @@ var (
 			Fill: carbon.ActiveSecondary,
 		},
 		Focus: ButtonFocus,
+		Common: func(ctx *gg.Context) {
+			ctx.SetColor(carbon.Text4)
+		},
 	}
 
 	// TertiaryButton is needed for some additional actions.
