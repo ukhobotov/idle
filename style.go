@@ -29,10 +29,7 @@ func (style *Style) Rasterize(w, h float64) {
 		return
 	}
 	if !(w > 0 && h > 0) {
-		panic(fmt.Errorf("incorrect size: %g, %g", w, h))
-	}
-	if style.Fill == nil && style.Drawing == nil && style.Border == (Border{}) {
-		return
+		panic(fmt.Errorf("incorrect style size: %g, %g", w, h))
 	}
 
 	ctx := gg.NewContext(int(w), int(h))
