@@ -56,6 +56,7 @@ func (style *Style) Rasterize(w, h float64) {
 		drawBorder(style.Border.Alignment, ctx, w, h)
 		if style.Border.Splitter != nil {
 			ctx.SetColor(style.Border.Splitter)
+			ctx.SetLineWidth(1)
 			drawBorder(style.Border.Alignment, ctx, w-style.Border.Width-0.5, h-style.Border.Width-0.5)
 		}
 	}
