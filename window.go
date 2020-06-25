@@ -105,7 +105,7 @@ func (win *Window) Show() {
 			}
 
 			// drawing the UI
-			win.window.Clear(Bg)
+			win.window.Clear(Background)
 			win.Root.Draw(win)
 		}
 		for i := range shown {

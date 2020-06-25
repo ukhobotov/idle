@@ -88,7 +88,7 @@ var (
 	Gray60Hover = hex("#606060")
 
 	// Default background
-	Bg = &Gray100
+	Background = &Gray100
 
 	// ButtonPrimary interactive color; ButtonPrimary button
 	Interactive1 = new(color.RGBA)
@@ -99,7 +99,7 @@ var (
 	// Focus elements; Activated elements; Accent tools
 	Interactive4 = new(color.RGBA)
 
-	// Container background on Bg; Secondary page background
+	// Container background on Background; Secondary page background
 	Ui1 = new(color.RGBA)
 	// Container background on Ui1; `Light` variant Style
 	Ui2 = new(color.RGBA)
@@ -159,7 +159,7 @@ func init() {
 }
 
 func SetGray100Theme() {
-	*Bg = Gray100
+	*Background = Gray100
 
 	*Interactive1 = Blue60
 	*Interactive2 = Gray60

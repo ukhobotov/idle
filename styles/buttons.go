@@ -74,8 +74,9 @@ func TertiaryButton() carbon.HandlerStyle {
 func ButtonFocus() *carbon.Style {
 	return &carbon.Style{
 		Border: carbon.Border{
-			Color: carbon.Interactive4,
-			Width: 2,
+			Color:    carbon.Interactive4,
+			Width:    2,
+			Splitter: carbon.Background,
 		},
 	}
 }
