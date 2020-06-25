@@ -133,6 +133,11 @@ var (
 	// High contrast backgrounds; High contrast elements
 	Inverse2 = new(color.RGBA)
 
+	// Focus border; Focus underline
+	Focus = new(color.RGBA)
+	// Focus on high contrast moments
+	InverseFocus = new(color.RGBA)
+
 	// Interactive1 hover
 	HoverPrimary = new(color.RGBA)
 	// Interactive1 text hover
@@ -184,6 +189,9 @@ func SetGray100Theme() {
 
 	*Inverse1 = Gray100
 	*Inverse2 = Gray10
+
+	*Focus = White
+	*InverseFocus = Blue60
 
 	*HoverPrimary = Blue60Hover
 	*HoverPrimaryText = Blue70
