@@ -53,11 +53,11 @@ func (style *Style) Rasterize(w, h float64) {
 			style.Border.Alignment = Left | Bottom | Right | Top
 		}
 		ctx.SetColor(style.Border.Color)
-		drawBorder(style.Border.Alignment, ctx, w, h)
+		drawBorder(style.Border.Alignment, ctx, w, h, 0)
 		if style.Border.Splitter != nil {
 			ctx.SetColor(style.Border.Splitter)
 			ctx.SetLineWidth(1)
-			drawBorder(style.Border.Alignment, ctx, w-style.Border.Width-0.5, h-style.Border.Width-0.5)
+			drawBorder(style.Border.Alignment, ctx, w, h, style.Border.Width+0.5)
 		}
 	}
 
@@ -68,21 +68,21 @@ func (style *Style) Rasterize(w, h float64) {
 	}
 }
 
-func drawBorder(align alignment, ctx *gg.Context, w, h float64) {
+func drawBorder(align alignment, ctx *gg.Context, w, h, p float64) {
 	if align.Has(Left) {
-		ctx.DrawLine(0, h, 0, 0)
+		ctx.DrawLine(0+p, h-p, 0+p, 0+p)
 		ctx.Stroke()
 	}
 	if align.Has(Top) {
-		ctx.DrawLine(0, 0, w, 0)
+		ctx.DrawLine(0+p, 0+p, w-p, 0+p)
 		ctx.Stroke()
 	}
 	if align.Has(Right) {
-		ctx.DrawLine(w, 0, w, h)
+		ctx.DrawLine(w-p, 0+p, w-p, h-p)
 		ctx.Stroke()
 	}
 	if align.Has(Bottom) {
-		ctx.DrawLine(w, h, 0, h)
+		ctx.DrawLine(w-p, h-p, 0+p, h-p)
 		ctx.Stroke()
 	}
 }
