@@ -21,6 +21,7 @@ type Drawing func(ctx *gg.Context)
 type Border struct {
 	Color     *color.RGBA
 	Width     float64
+	Splitter  *color.RGBA
 	Alignment alignment
 }
 
@@ -36,8 +37,7 @@ func (style *Style) Rasterize(w, h float64) {
 
 	if style.Fill != nil {
 		ctx.SetColor(style.Fill)
-		ctx.DrawRectangle(0, 0, w, h)
-		ctx.Fill()
+		ctx.Clear()
 	}
 
 	if style.Drawing != nil {
@@ -53,28 +53,34 @@ func (style *Style) Rasterize(w, h float64) {
 			style.Border.Alignment = Left | Bottom | Right | Top
 		}
 		ctx.SetColor(style.Border.Color)
-		if style.Border.Alignment.Has(Left) {
-			ctx.DrawLine(0, h, 0, 0)
-			ctx.Stroke()
-		}
-		if style.Border.Alignment.Has(Top) {
-			ctx.DrawLine(0, 0, w, 0)
-			ctx.Stroke()
-		}
-		if style.Border.Alignment.Has(Right) {
-			ctx.DrawLine(w, 0, w, h)
-			ctx.Stroke()
-		}
-		if style.Border.Alignment.Has(Bottom) {
-			ctx.DrawLine(w, h, 0, h)
-			ctx.Stroke()
-		}
+		drawBorder(style.Border.Alignment, ctx, w, h)
+		ctx.SetColor(style.Border.Splitter)
+		drawBorder(style.Border.Alignment, ctx, w-style.Border.Width-0.5, h-style.Border.Width-0.5)
 	}
 
 	if style.sprite == nil {
 		style.sprite = pixel.NewSprite(pixel.PictureDataFromImage(ctx.Image()), pixel.R(0, 0, w, h))
 	} else {
 		style.sprite.Set(pixel.PictureDataFromImage(ctx.Image()), pixel.R(0, 0, w, h))
+	}
+}
+
+func drawBorder(align alignment, ctx *gg.Context, w, h float64) {
+	if align.Has(Left) {
+		ctx.DrawLine(0, h, 0, 0)
+		ctx.Stroke()
+	}
+	if align.Has(Top) {
+		ctx.DrawLine(0, 0, w, 0)
+		ctx.Stroke()
+	}
+	if align.Has(Right) {
+		ctx.DrawLine(w, 0, w, h)
+		ctx.Stroke()
+	}
+	if align.Has(Bottom) {
+		ctx.DrawLine(w, h, 0, h)
+		ctx.Stroke()
 	}
 }
 

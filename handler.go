@@ -112,7 +112,7 @@ func (handler *Handler) Update() {
 
 func (style HandlerStyle) finish(final Drawing) {
 	for _, state := range []*Style{style.Idle, style.Hover, style.Active, style.Disabled} {
-		if state == nil {
+		if state == nil || state.sprite != nil {
 			continue
 		}
 		local := state.Drawing
