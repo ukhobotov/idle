@@ -96,12 +96,12 @@ var (
 	Interactive2 = new(color.RGBA)
 	// Tertiary button
 	Interactive3 = new(color.RGBA)
-	// Focus elements; Activated elements; Accent tools
+	// FocusStyle elements; Activated elements; Accent tools
 	Interactive4 = new(color.RGBA)
 
 	// Container background on Background; Secondary page background
 	Ui1 = new(color.RGBA)
-	// Container background on Ui1; `Light` variant Style
+	// Container background on Ui1; "Light" variant background
 	Ui2 = new(color.RGBA)
 	// Subtle border; Tertiary background
 	Ui3 = new(color.RGBA)
@@ -127,6 +127,11 @@ var (
 	Icon2 = new(color.RGBA)
 	// Icons on interactive colors; Icons on non-ui colors
 	Icon3 = new(color.RGBA)
+
+	// Default input fields; Fields on Backgrounds
+	Field1 = new(color.RGBA)
+	// “Light” variant input fields; Fields on Ui1 backgrounds
+	Field2 = new(color.RGBA)
 
 	// Inverse text color; Inverse icon color
 	Inverse1 = new(color.RGBA)
@@ -157,6 +162,13 @@ var (
 	ActiveTertiary = new(color.RGBA)
 	// Ui1 active; Ui2 active
 	ActiveUi = new(color.RGBA)
+
+	// Disabled fields; Disabled backgrounds; Disabled border
+	Disabled1 = new(color.RGBA)
+	// Disabled elements on Disabled1; Disabled label; Disabled text on Disabled1; Disabled icons; Disabled border
+	Disabled2 = new(color.RGBA)
+	// Disabled text on Disabled2; Disabled icons on Disabled2
+	Disabled3 = new(color.RGBA)
 )
 
 func init() {
@@ -187,6 +199,9 @@ func SetGray100Theme() {
 	*Icon2 = Gray30
 	*Icon3 = White
 
+	*Field1 = Gray80
+	*Field2 = Gray100
+
 	*Inverse1 = Gray100
 	*Inverse2 = Gray10
 
@@ -204,7 +219,9 @@ func SetGray100Theme() {
 	*ActiveTertiary = Gray30
 	*ActiveUi = Gray70
 
-	UpdateShown()
+	*Disabled1 = Gray90
+	*Disabled2 = Gray70
+	*Disabled3 = Gray60
 }
 
 func hex(hex string) color.RGBA {

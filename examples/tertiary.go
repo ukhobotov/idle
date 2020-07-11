@@ -1,31 +1,39 @@
 package main
 
 import (
-	"github.com/fogleman/gg"
+	"github.com/faiface/pixel"
+	"github.com/usualhuman/idle/carbon"
+	"github.com/usualhuman/idle/carbon/components"
+	"github.com/usualhuman/idle/carbon/icons"
 
-	"github.com/usualhuman/carbon"
-	"github.com/usualhuman/carbon/icons"
-	"github.com/usualhuman/carbon/styles"
+	"github.com/usualhuman/idle"
 )
 
 func main() {
-	window := &carbon.Window{
+	window := &idle.Window{
 		Width:  256,
 		Height: 128,
-		Root: &carbon.Container{
-			Content: []carbon.Element{
-				&carbon.Handler{
-					Location: carbon.Location{
-						Left:   carbon.Margin(16),
-						Top:    carbon.Margin(-16),
-						Right:  carbon.Margin(16 + 192),
-						Bottom: carbon.Margin(-16 - 48),
+		Root: &idle.Container{
+			State: &idle.State{
+				Fill: carbon.Background,
+			},
+			Content: []idle.Element{
+				&components.Button{
+					Location: idle.Location{
+						Left:   idle.Margin(16),
+						Top:    idle.Margin(-16),
+						Right:  idle.Margin(-16),
+						Bottom: idle.Margin(-16 - 48),
 					},
-					Style: styles.TertiaryButton,
-					Final: func(ctx *gg.Context) {
-						ctx.SetFontFace(carbon.NewFace(carbon.Regular, 16))
-						ctx.DrawString("Look I'm tertiary!", 16, 48-19)
-						icons.Add(float64(ctx.Width())-32, 16, 16)(ctx)
+					Style: carbon.PrimaryButton(),
+					Text: &idle.Text{
+						Pos:  pixel.V(16, 18),
+						Text: "Look I'm renovated!",
+					},
+					Icon: &idle.Icon{
+						Pos:  pixel.V(-32, 16),
+						Side: 16,
+						Func: icons.Add,
 					},
 				},
 			},

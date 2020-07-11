@@ -1,6 +1,10 @@
-package carbon
+package idle
 
-import "math"
+import (
+	"math"
+
+	"github.com/faiface/pixel"
+)
 
 type (
 	Location struct {
@@ -22,8 +26,8 @@ func (loc *Location) Contains(x, y float64) bool {
 	return loc.x1 <= x && x < loc.x2 && loc.y1 <= y && y < loc.y2
 }
 
-func (loc *Location) Center() (x, y float64) {
-	return (loc.x1 + loc.x2) / 2, (loc.y1 + loc.y2) / 2
+func (loc *Location) Center() pixel.Vec {
+	return pixel.V((loc.x1+loc.x2)/2, (loc.y1+loc.y2)/2)
 }
 
 func (loc *Location) Absolute() (x1, y1, x2, y2 float64) {

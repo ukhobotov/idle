@@ -1,74 +1,82 @@
-package carbon
+package idle
 
 import (
 	"fmt"
+	"image"
 	"image/color"
 
 	"github.com/faiface/pixel"
 	"github.com/fogleman/gg"
 )
 
-type Style struct {
-	Fill    *color.RGBA
-	Drawing Drawing
-	Border  Border
-
-	sprite *pixel.Sprite
-}
-
-type Drawing func(ctx *gg.Context)
-
-type Border struct {
-	Color     *color.RGBA
-	Width     float64
-	Splitter  *color.RGBA
-	Alignment alignment
-}
-
-func (style *Style) Rasterize(w, h float64) {
-	if style == nil {
-		return
+type (
+	Styler interface {
+		Rasterize(w, h float64)
+		Draw(target pixel.Target, center pixel.Vec)
 	}
+
+	State struct {
+		Fill   color.Color
+		Drawer Drawer
+		Border Border
+		sprite *pixel.Sprite
+	}
+
+	Drawer interface {
+		Draw(ctx *gg.Context)
+	}
+
+	Border struct {
+		Color     color.Color
+		Width     float64
+		Inset     color.Color
+		Alignment alignment
+	}
+)
+
+func (style *State) Rasterize(w, h float64) {
 	if !(w > 0 && h > 0) {
-		panic(fmt.Errorf("incorrect style size: %g, %g", w, h))
+		panic(fmt.Errorf("incorrect tile size: %gx%g", w, h))
 	}
 
-	ctx := gg.NewContext(int(w), int(h))
+	rgba := image.NewRGBA(image.Rect(0, 0, int(w), int(h)))
+	ctx := gg.NewContextForRGBA(rgba)
 
 	if style.Fill != nil {
 		ctx.SetColor(style.Fill)
 		ctx.Clear()
 	}
 
-	if style.Drawing != nil {
-		style.Drawing(ctx)
+	if style.Drawer != nil {
+		style.Drawer.Draw(ctx)
 	}
 
-	if style.Border.Color != nil {
-		if style.Border.Width == 0 {
-			style.Border.Width = 1
+	border := style.Border
+	if border.Color != nil {
+		if border.Width == 0 {
+			border.Width = 1
 		}
-		ctx.SetLineWidth(style.Border.Width * 2)
-		if style.Border.Alignment == 0 {
-			style.Border.Alignment = Left | Bottom | Right | Top
+		ctx.SetLineWidth(border.Width * 2)
+		if border.Alignment == 0 {
+			border.Alignment = Left | Bottom | Right | Top
 		}
-		ctx.SetColor(style.Border.Color)
-		drawBorder(style.Border.Alignment, ctx, w, h, 0)
-		if style.Border.Splitter != nil {
-			ctx.SetColor(style.Border.Splitter)
+		ctx.SetColor(border.Color)
+		drawBorder(ctx, border.Alignment, w, h, 0)
+		if border.Inset != nil {
+			ctx.SetColor(border.Inset)
 			ctx.SetLineWidth(1)
-			drawBorder(style.Border.Alignment, ctx, w, h, style.Border.Width+0.5)
+			drawBorder(ctx, border.Alignment, w, h, border.Width+0.5)
 		}
 	}
 
 	if style.sprite == nil {
-		style.sprite = pixel.NewSprite(pixel.PictureDataFromImage(ctx.Image()), pixel.R(0, 0, w, h))
+		style.sprite = pixel.NewSprite(pixel.PictureDataFromImage(rgba), pixel.R(0, 0, w, h))
 	} else {
-		style.sprite.Set(pixel.PictureDataFromImage(ctx.Image()), pixel.R(0, 0, w, h))
+		style.sprite.Set(pixel.PictureDataFromImage(rgba), pixel.R(0, 0, w, h))
 	}
 }
 
-func drawBorder(align alignment, ctx *gg.Context, w, h, p float64) {
+func drawBorder(ctx *gg.Context, align alignment, w, h, p float64) {
 	if align.Has(Left) {
 		ctx.DrawLine(0+p, h-p, 0+p, 0+p)
 		ctx.Stroke()
@@ -87,18 +95,38 @@ func drawBorder(align alignment, ctx *gg.Context, w, h, p float64) {
 	}
 }
 
-func (style *Style) Draw(win *Window, x, y float64) {
-	if style == nil || style.sprite == nil {
-		return
+func (style *State) Draw(target pixel.Target, center pixel.Vec) {
+	style.sprite.Draw(target, pixel.IM.Moved(center))
+}
+
+type DrawerFunc func(ctx *gg.Context)
+
+func (drawer DrawerFunc) Draw(ctx *gg.Context) {
+	drawer(ctx)
+}
+
+type MultiDrawer []Drawer
+
+func (drawer MultiDrawer) Draw(ctx *gg.Context) {
+	for _, d := range drawer {
+		d.Draw(ctx)
 	}
-	style.sprite.Draw(win.window, pixel.IM.Moved(pixel.V(x, y)))
 }
 
-func (style *Style) Empty() bool {
-	return style.sprite == nil
+type TextIconDrawer struct {
+	TextColor color.Color
+	IconColor color.Color
+	Text      *Text
+	Icon      *Icon
 }
 
-type Styler interface {
-	Rasterize(w, h float64)
-	Draw(x, y float64)
+func (drawer *TextIconDrawer) Draw(ctx *gg.Context) {
+	if drawer.Text != nil {
+		ctx.SetColor(drawer.TextColor)
+		drawer.Text.Draw(ctx)
+	}
+	if drawer.Icon != nil {
+		ctx.SetColor(drawer.IconColor)
+		drawer.Icon.Draw(ctx)
+	}
 }

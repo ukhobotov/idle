@@ -2,7 +2,7 @@
 // sources:
 // IBMPlexSans-Regular.ttf
 // IBMPlexSans-Bold.ttf
-package carbon
+package idle
 
 import (
 	"bytes"

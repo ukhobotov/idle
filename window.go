@@ -1,6 +1,7 @@
-package carbon
+package idle
 
 import (
+	"image/color"
 	"time"
 
 	"github.com/faiface/pixel"
@@ -13,16 +14,15 @@ type Window struct {
 	Width, Height float64
 	Fullscreen    bool
 	Root          Element
-
-	window *pixelgl.Window
+	*pixelgl.Window
 }
 
 func (win *Window) Show() {
 	shown = append(shown, win)
 	pixelgl.Run(func() {
 		var (
-			err    error
-			x0, y0 float64
+			err  error
+			pos0 pixel.Vec
 		)
 
 		if win.Fullscreen {
@@ -35,8 +35,8 @@ func (win *Window) Show() {
 			win.Height = 720
 		}
 
-		// creating a window
-		win.window, err = pixelgl.NewWindow(pixelgl.WindowConfig{
+		// creating a Window
+		win.Window, err = pixelgl.NewWindow(pixelgl.WindowConfig{
 			Title:     win.Title,
 			Bounds:    pixel.R(0, 0, win.Width, win.Height),
 			VSync:     true,
@@ -52,18 +52,18 @@ func (win *Window) Show() {
 		frames := 0
 
 		// entering the loop
-		for !win.window.Closed() {
-			win.window.Update()
+		for !win.Window.Closed() {
+			win.Window.Update()
 
 			// handling resizing
-			if w1, h1 := win.window.Bounds().Size().XY(); w1 != win.Width || h1 != win.Height {
+			if w1, h1 := win.Window.Bounds().Size().XY(); w1 != win.Width || h1 != win.Height {
 				win.Width, win.Height = w1, h1
-				// TODO: add minsize
+				// TODO: add minsize (why?)
 				win.Update()
 			}
 
 			// transmitting mouse events
-			x, y := win.window.MousePosition().XY()
+			pos := win.Window.MousePosition()
 			buttons := []pixelgl.Button{
 				pixelgl.MouseButtonLeft,
 				pixelgl.MouseButtonRight,
@@ -71,29 +71,29 @@ func (win *Window) Show() {
 			}
 			pressed := NilButton
 			for _, button := range buttons {
-				if win.window.Pressed(button) {
+				if win.Window.Pressed(button) {
 					pressed = button
 				}
-				if win.window.JustPressed(button) {
+				if win.Window.JustPressed(button) {
 					if focused != nil {
 						focused.Defocus()
 						focused = nil
 					}
-					win.Root.Handle(Press.The(button), x, y)
+					win.Root.Handle(Press.The(button, pos))
 				}
-				if win.window.JustReleased(button) {
-					win.Root.Handle(Release.The(button), x, y)
-					HandleHovered(Release.The(pressed), x, y)
+				if win.Window.JustReleased(button) {
+					win.Root.Handle(Release.The(button, pos))
+					HandleHovered(Release.The(pressed, pos))
 				}
 			}
-			if x != x0 || y != y0 {
-				win.Root.Handle(Move.The(pressed), x, y)
-				HandleHovered(Move.The(pressed), x, y)
-				x0, y0 = x, y
+			if pos != pos0 {
+				win.Root.Handle(Move.The(pressed, pos))
+				HandleHovered(Move.The(pressed, pos))
+				pos0 = pos
 			}
-			scroll := win.window.MouseScroll()
+			scroll := win.Window.MouseScroll()
 			if scroll != pixel.ZV {
-				win.Root.Handle(Event{Action: Scroll, Scroll: scroll}, x, y)
+				win.Root.Handle(Event{Action: Scroll, Scroll: scroll, MousePos: pos})
 			}
 
 			// counting fps
@@ -105,7 +105,7 @@ func (win *Window) Show() {
 			}
 
 			// drawing the UI
-			win.window.Clear(Background)
+			win.Window.Clear(color.RGBA{})
 			win.Root.Draw(win)
 		}
 		for i := range shown {

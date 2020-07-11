@@ -1,4 +1,4 @@
-package carbon
+package idle
 
 import (
 	"io"

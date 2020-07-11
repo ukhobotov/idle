@@ -1,8 +1,10 @@
-package carbon
+package idle
+
+import "github.com/faiface/pixel"
 
 type Switcher struct {
 	Location
-	Style    *Style
+	Style    *State
 	Elements []Element
 	Current  Element
 }
@@ -21,16 +23,15 @@ func (switcher *Switcher) Rasterize() {
 	}
 }
 
-func (switcher *Switcher) Handle(event Event, x, y float64) {
+func (switcher *Switcher) Handle(event Event) {
 	if switcher.Current != nil {
-		switcher.Current.Handle(event, x, y)
+		switcher.Current.Handle(event)
 	}
 }
 
-func (switcher *Switcher) Draw(win *Window) {
-	x, y := switcher.Center()
-	switcher.Style.Draw(win, x, y)
+func (switcher *Switcher) Draw(target pixel.Target) {
+	switcher.Style.Draw(target, switcher.Center())
 	if switcher.Current != nil {
-		switcher.Current.Draw(win)
+		switcher.Current.Draw(target)
 	}
 }

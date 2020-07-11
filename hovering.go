@@ -1,8 +1,8 @@
-package carbon
+package idle
 
 // type Hoverable interface {
 //   Contains(x, y float64) bool
-//   Land()
+//   Dehover()
 // }
 //
 // var hovered []Hoverable
@@ -24,7 +24,7 @@ package carbon
 //   }
 //   for _, object := range hovered {
 //     if object != nil && !object.Contains(x, y) {
-//       object.Land()
+//       object.Dehover()
 //     }
 //   }
 // }

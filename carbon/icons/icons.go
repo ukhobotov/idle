@@ -2,11 +2,8 @@ package icons
 
 import (
 	"github.com/fogleman/gg"
-
-	"github.com/usualhuman/carbon"
+	"github.com/usualhuman/idle"
 )
-
-type Icon func(x, y, a float64) carbon.Drawing
 
 const (
 	l1 float64 = 3 / 32
@@ -17,7 +14,7 @@ const (
 	g1 float64 = 29 / 32
 )
 
-// var Back = func(style Style) carbon.Drawing {
+// var Back = func(style Sprite) idle.Drawer {
 //   iconColor, P, I := style.Props()
 //   return func(ctx *gg.Context) {
 //     ctx.SetColor(iconColor)
@@ -29,7 +26,7 @@ const (
 //   }
 // }
 //
-// var Menu = func(style Style) carbon.Drawing {
+// var Menu = func(style Sprite) idle.Drawer {
 //   iconColor, P, I := style.Props()
 //   return func(ctx *gg.Context) {
 //     ctx.SetColor(iconColor)
@@ -43,7 +40,7 @@ const (
 // }
 
 //
-// func Refresh(style Style) carbon.Drawing {
+// func Refresh(style Sprite) idle.Drawer {
 //   iconColor, P, I := style.Props()
 //   return func(ctx *gg.Context) {
 //     ctx.SetColor(iconColor)
@@ -60,7 +57,7 @@ const (
 //   }
 // }
 
-func Play(x, y, a float64) carbon.Drawing {
+func Play(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
 		ctx.NewSubPath()
 		ctx.MoveTo(x+a*l3, y+a*l1)
@@ -72,7 +69,7 @@ func Play(x, y, a float64) carbon.Drawing {
 	}
 }
 
-func Stop(x, y, a float64) carbon.Drawing {
+func Stop(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
 		ctx.SetLineWidth(a / 16)
 		ctx.DrawRectangle(x+a*l2, y+a*l2, a*11/16, a*11/16)
@@ -80,7 +77,7 @@ func Stop(x, y, a float64) carbon.Drawing {
 	}
 }
 
-func Pause(x, y, a float64) carbon.Drawing {
+func Pause(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
 		ctx.SetLineWidth(a / 16)
 		ctx.DrawRectangle(x+a*l2, y+a*l2, a*3/16, a*11/16)
@@ -89,7 +86,7 @@ func Pause(x, y, a float64) carbon.Drawing {
 	}
 }
 
-func Down(x, y, a float64) carbon.Drawing {
+func Down(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
 		ctx.MoveTo(x+a*5/32, y+a*11/32)
 		ctx.LineTo(x+a/2, y+a*11/16)
@@ -99,18 +96,18 @@ func Down(x, y, a float64) carbon.Drawing {
 	}
 }
 
-func Exit(x, y, a float64) carbon.Drawing {
+func Exit(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
 		ctx.DrawLine(x+a*g3, y+a*l1, x+a*g3, y+a*g1)
-		ctx.DrawLine(x+a*l1, y*a*1/2, x*a*(l1+1/8), y*a*(1/2+1/8))
-		ctx.DrawLine(x+a*l1, y*a*1/2, x*a*(l1+1/8), y*a*(1/2-1/8))
-		ctx.DrawLine(x+a*l1, y*a*1/2, x*a*(g3-1/8), y*a*1/2)
+		ctx.DrawLine(x+a*l1, y+a*1/2, x+a*(l1+1/8), y+a*(1/2+1/8))
+		ctx.DrawLine(x+a*l1, y+a*1/2, x+a*(l1+1/8), y+a*(1/2-1/8))
+		ctx.DrawLine(x+a*l1, y+a*1/2, x+a*(g3-1/8), y+a*1/2)
 		ctx.SetLineWidth(a / 16)
 		ctx.Stroke()
 	}
 }
 
-func Add(x, y, a float64) carbon.Drawing {
+func Add(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
 		ctx.SetLineWidth(a / 8)
 		ctx.DrawLine(x+a*3/16, y+a/2, x+a*13/16, y+a/2)

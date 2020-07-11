@@ -1,8 +1,7 @@
-package carbon
+package idle
 
 import (
-	"github.com/faiface/pixel/pixelgl"
-	"github.com/fogleman/gg"
+	"github.com/faiface/pixel"
 )
 
 type (
@@ -11,30 +10,30 @@ type (
 	Handler struct {
 		Location
 		Style    HandlerStyle
-		Final    Drawing
+		Final    DrawerFunc
 		Disabled bool
 
 		OnPress, OnRelease, OnHover func(this *Handler)
 
-		background, foreground     *Style
+		background, foreground     *State
 		hovered, pressed, selected bool
 	}
 
 	// HandlerStyle is a set of styles for the Handler.
 	HandlerStyle struct {
-		Idle, Hover, Active, Focus, Disabled *Style
+		Idle, Hover, Active, Focus, Disabled *State
 
-		Common Drawing
+		Common DrawerFunc
 	}
 )
 
-func (handler *Handler) Handle(event Event, _, _ float64) {
+func (handler *Handler) Handle(event Event) {
 	if handler.Disabled {
 		return
 	}
-	switch {
+	switch event.Action {
 
-	case event == Press.The(pixelgl.MouseButtonLeft):
+	case Press:
 		if handler.OnPress != nil {
 			handler.OnPress(handler)
 		}
@@ -43,7 +42,7 @@ func (handler *Handler) Handle(event Event, _, _ float64) {
 		focused = handler
 		handler.Update()
 
-	case event == Release.The(pixelgl.MouseButtonLeft):
+	case Release:
 		if handler.pressed {
 			if handler.OnRelease != nil {
 				handler.OnRelease(handler)
@@ -53,7 +52,7 @@ func (handler *Handler) Handle(event Event, _, _ float64) {
 		}
 		fallthrough
 
-	case event.Action == Move:
+	case Move:
 		if !handler.hovered {
 			if handler.OnHover != nil {
 				handler.OnHover(handler)
@@ -66,18 +65,16 @@ func (handler *Handler) Handle(event Event, _, _ float64) {
 }
 
 func (handler *Handler) Rasterize() {
-	handler.Style.finish(handler.Final)
 	handler.Style.Rasterize(handler.Size())
 	handler.Update()
 }
 
-func (handler *Handler) Draw(win *Window) {
-	x, y := handler.Center()
-	handler.background.Draw(win, x, y)
-	handler.foreground.Draw(win, x, y)
+func (handler *Handler) Draw(target pixel.Target) {
+	handler.background.Draw(target, handler.Center())
+	handler.foreground.Draw(target, handler.Center())
 }
 
-func (handler *Handler) Land() {
+func (handler *Handler) Dehover() {
 	handler.pressed = false
 	handler.hovered = false
 	handler.Update()
@@ -110,26 +107,6 @@ func (handler *Handler) Update() {
 	}
 }
 
-func (style HandlerStyle) finish(final Drawing) {
-	for _, state := range []*Style{style.Idle, style.Hover, style.Active, style.Disabled} {
-		if state == nil || state.sprite != nil {
-			continue
-		}
-		local := state.Drawing
-		state.Drawing = func(ctx *gg.Context) {
-			if local != nil {
-				local(ctx)
-			}
-			if style.Common != nil {
-				style.Common(ctx)
-			}
-			if final != nil {
-				final(ctx)
-			}
-		}
-	}
-}
-
 func (style HandlerStyle) Rasterize(w, h float64) {
 	style.Idle.Rasterize(w, h)
 	style.Hover.Rasterize(w, h)
@@ -138,15 +115,24 @@ func (style HandlerStyle) Rasterize(w, h float64) {
 	style.Disabled.Rasterize(w, h)
 }
 
-var hovered []*Handler
+type Hovered interface {
+	Contains(x, y float64) bool
+	Dehover()
+}
 
-func HandleHovered(event Event, x, y float64) {
+var hovered []Hovered
+
+func Hover(hover Hovered) {
+	hovered = append(hovered, hover)
+}
+
+func HandleHovered(event Event) {
 	if event.Action == Move && event.Button != NilButton {
 		return
 	}
 	for i, hover := range hovered {
-		if !hover.Contains(x, y) {
-			hover.Land()
+		if !hover.Contains(event.MousePos.XY()) {
+			hover.Dehover()
 			last := len(hovered) - 1
 			hovered[i], hovered[last] = hovered[last], nil
 			hovered = hovered[:last]
@@ -154,4 +140,15 @@ func HandleHovered(event Event, x, y float64) {
 	}
 }
 
-var focused *Handler
+type Focused interface {
+	Defocus()
+}
+
+func Focus(focus Focused) {
+	if focused != nil {
+		focused.Defocus()
+	}
+	focused = focus
+}
+
+var focused Focused

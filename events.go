@@ -1,4 +1,4 @@
-package carbon
+package idle
 
 import (
 	"github.com/faiface/pixel"
@@ -7,10 +7,11 @@ import (
 )
 
 type Event struct {
-	Action MouseAction
-	Button pixelgl.Button
-	Scroll pixel.Vec
-	Doomed bool
+	Action   MouseAction
+	MousePos pixel.Vec
+	Button   pixelgl.Button
+	Scroll   pixel.Vec
+	Doomed   bool
 }
 
 var MoveEvent = Event{Action: Move, Button: NilButton}
@@ -26,6 +27,6 @@ const (
 	NilButton pixelgl.Button = -1
 )
 
-func (action MouseAction) The(button pixelgl.Button) Event {
-	return Event{Action: action, Button: button}
+func (action MouseAction) The(button pixelgl.Button, at pixel.Vec) Event {
+	return Event{Action: action, Button: button, MousePos: at}
 }

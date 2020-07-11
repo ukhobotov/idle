@@ -1,8 +1,10 @@
-package carbon
+package idle
+
+import "github.com/faiface/pixel"
 
 type Container struct {
 	Location
-	Style   *Style
+	State   *State
 	Content []Element
 }
 
@@ -13,10 +15,10 @@ func (ctr *Container) FitInto(x1, y1, x2, y2 float64) {
 	}
 }
 
-func (ctr *Container) Handle(event Event, x, y float64) {
+func (ctr *Container) Handle(event Event) {
 	for _, element := range ctr.Content {
-		if element.Contains(x, y) {
-			element.Handle(event, x, y)
+		if element.Contains(event.MousePos.XY()) {
+			element.Handle(event)
 		}
 		if event.Doomed {
 			return
@@ -25,16 +27,15 @@ func (ctr *Container) Handle(event Event, x, y float64) {
 }
 
 func (ctr *Container) Rasterize() {
-	ctr.Style.Rasterize(ctr.Location.Size())
+	ctr.State.Rasterize(ctr.Location.Size())
 	for _, element := range ctr.Content {
 		element.Rasterize()
 	}
 }
 
-func (ctr *Container) Draw(win *Window) {
-	x, y := ctr.Location.Center()
-	ctr.Style.Draw(win, x, y)
+func (ctr *Container) Draw(target pixel.Target) {
+	ctr.State.Draw(target, ctr.Center())
 	for _, element := range ctr.Content {
-		element.Draw(win)
+		element.Draw(target)
 	}
 }
