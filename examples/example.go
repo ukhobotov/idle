@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/faiface/pixel"
 	"github.com/usualhuman/idle/carbon"
-	"github.com/usualhuman/idle/carbon/components"
 	"github.com/usualhuman/idle/carbon/icons"
+	"github.com/usualhuman/idle/components"
 
 	"github.com/usualhuman/idle"
 )
@@ -25,7 +25,7 @@ func main() {
 						Right:  idle.Margin(-16),
 						Bottom: idle.Margin(-16 - 48),
 					},
-					Style: carbon.PrimaryButton(),
+					Style: components.PrimaryButton(),
 					Text: &idle.Text{
 						Pos:  pixel.V(16, 18),
 						Text: "Look I'm renovated!",
@@ -33,7 +33,7 @@ func main() {
 					Icon: &idle.Icon{
 						Pos:  pixel.V(-32, 16),
 						Side: 16,
-						Func: icons.Add,
+						Func: icons.Exit,
 					},
 				},
 			},

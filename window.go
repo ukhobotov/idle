@@ -35,7 +35,7 @@ func (win *Window) Show() {
 			win.Height = 720
 		}
 
-		// creating a Window
+		// creating a window
 		win.Window, err = pixelgl.NewWindow(pixelgl.WindowConfig{
 			Title:     win.Title,
 			Bounds:    pixel.R(0, 0, win.Width, win.Height),

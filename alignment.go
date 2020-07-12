@@ -9,6 +9,6 @@ const (
 	Top    alignment = 0b1000
 )
 
-func (alt alignment) Has(some alignment) bool {
-	return alt&some == some
+func (all alignment) Has(some alignment) bool {
+	return all&some == some
 }

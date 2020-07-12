@@ -24,5 +24,5 @@ func (icon *Icon) Draw(ctx *gg.Context) {
 		ctx.SetColor(icon.Color)
 	}
 	w, h := float64(ctx.Width()), float64(ctx.Height())
-	icon.Func(math.Mod(icon.Pos.X+w, w), h-icon.Side-math.Mod(icon.Pos.Y+h, h), icon.Side)(ctx)
+	icon.Func(math.Mod(icon.Pos.X+w, w), h-icon.Side-math.Mod(icon.Pos.Y+h, h), icon.Side).Draw(ctx)
 }

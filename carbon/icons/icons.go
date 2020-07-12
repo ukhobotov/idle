@@ -98,11 +98,11 @@ func Down(x, y, a float64) idle.DrawerFunc {
 
 func Exit(x, y, a float64) idle.DrawerFunc {
 	return func(ctx *gg.Context) {
+		ctx.SetLineWidth(a / 16)
 		ctx.DrawLine(x+a*g3, y+a*l1, x+a*g3, y+a*g1)
 		ctx.DrawLine(x+a*l1, y+a*1/2, x+a*(l1+1/8), y+a*(1/2+1/8))
 		ctx.DrawLine(x+a*l1, y+a*1/2, x+a*(l1+1/8), y+a*(1/2-1/8))
 		ctx.DrawLine(x+a*l1, y+a*1/2, x+a*(g3-1/8), y+a*1/2)
-		ctx.SetLineWidth(a / 16)
 		ctx.Stroke()
 	}
 }
